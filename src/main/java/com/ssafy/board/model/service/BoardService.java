@@ -9,15 +9,15 @@ public interface BoardService {
 	//글쓰기
 	void writeBoard(Board board);
 	//글수정
-	void modifyBoard(Board board);
+	boolean modifyBoard(Board board);
 	//글삭제
-	void deleteBoard(int id);
+	boolean deleteBoard(int num);
 	//조회수 증가
-	void updateCnt(int id);
+	void updateCnt(int num);
 	//글 얻어오기
-	Board getBoardById(int id);
+	Board getBoardByNum(int num);
 	//글 읽기
-	Board readBoard(int id);
+	Board readBoard(int num);
 	//모든게시물 조회
 	List<Board> getBoardList(HashMap<String, String> params);
 }

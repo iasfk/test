@@ -22,25 +22,19 @@ public class UserServiceImpl implements UserService{
 	
 	@Transactional
 	@Override
-	public void join(User user, String msg) throws Exception {
+	public void join(User user) throws Exception {
 		// TODO Auto-generated method stub
 		user.setPw( new SHA256().getHash(user.getPw()) );
-		Board b = new Board();
-		b.setTitle(user.getUsername() + "가입 인사입니다.");
-		b.setContent(msg);
-		b.setWriter(user.getUsername());
-		boardDao.insertBoard(b);
 		userDao.insertUser(user);
 	}
 
 	@Override
-	public User login(String id, String pw) throws Exception {
+	public User login(String userId, String pw) throws Exception {
 		// TODO Auto-generated method stub
 		//id로 select해와서
-		User user = userDao.selectById(id);
+		User user = userDao.selectByUserId(userId);
 		if( user == null )
 			throw new UserNotFoundException();
-		//그 user가 pw가 맞으면 ㅇㅋ
 		if( !user.getPw().equals( new SHA256().getHash(pw) ) )
 			throw new PWIncorrectException();
 		else

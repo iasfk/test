@@ -10,57 +10,53 @@ import com.ssafy.board.model.dao.BoardDao;
 import com.ssafy.board.model.dto.Board;
 
 @Service
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
+	
 	@Autowired
 	private BoardDao boardDao;
 	
+	
+	@Override
+	public List<Board> getBoardList(HashMap<String, String> params) {
+		return boardDao.selectList(params);
+	}
+
+	@Override
+	public Board getBoardByNum(int num) {
+		return boardDao.selectOne(num);
+	}
+
 	@Override
 	public void writeBoard(Board board) {
-		// TODO Auto-generated method stub
 		boardDao.insertBoard(board);
 	}
 
 	@Override
-	public void modifyBoard(Board board) {
-		// TODO Auto-generated method stub
-		Board originBoard = boardDao.selectOne(board.getId());
+	public boolean modifyBoard(Board board) {
+		Board originBoard = boardDao.selectOne(board.getNum());
 		originBoard.setTitle(board.getTitle());
 		originBoard.setContent(board.getContent());
-		boardDao.updateBoard(originBoard);
+		return boardDao.updateBoard(originBoard) == true;
 	}
 
 	@Override
-	public void deleteBoard(int id) {
-		// TODO Auto-generated method stub
-		Board board = boardDao.selectOne(id);
-		boardDao.deleteBoard(id);
+	public boolean deleteBoard(int num) {
+		return boardDao.deleteBoard(num) == true;
 	}
 
 	@Override
-	public void updateCnt(int id) {
-		// TODO Auto-generated method stub
-		Board board = boardDao.selectOne(id);
-		board.setViewCnt(board.getViewCnt() + 1);
+	public void updateCnt(int num) {
+		Board board = boardDao.selectOne(num);
+		board.setViewCnt(board.getViewCnt()+1);
 		boardDao.updateBoard(board);
 	}
 
 	@Override
-	public Board getBoardById(int id) {
-		// TODO Auto-generated method stub
-		return boardDao.selectOne(id);
+	public Board readBoard(int num) {
+		this.updateCnt(num);
+		return boardDao.selectOne(num);
 	}
-
-	@Override
-	public Board readBoard(int id) {
-		// TODO Auto-generated method stub
-		this.updateCnt(id);
-		return boardDao.selectOne(id);
-	}
-
-	@Override
-	public List<Board> getBoardList(HashMap<String, String> params) {
-		// TODO Auto-generated method stub
-		return boardDao.selectList(params);
-	}
-
+	
+	
+	
 }
